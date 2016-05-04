@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
                                          uniqueness: {case_sensetive: false}
   #add functionality for secure password
   has_secure_password
-  validates  :password,  length: {minimum: 8}
+  validates  :password,  length: {minimum: 8}, allow_blank: true
 
   # returns the hash digest of user
   def User.digest(string)

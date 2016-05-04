@@ -3,3 +3,9 @@ micky:
    nickname: mouse
    email: sandy@gmail.com
    password_digest: <%= User.digest("password")%>
+
+james:
+   name: James dog
+   nickname: dog
+   email: wandy@gmail.com
+   password_digest: <%= User.digest("password")%>

@@ -1,9 +1,10 @@
 class User < ActiveRecord::Base
-  attr_accessor :remember_token
+  attr_accessor :remember_token, :activation_token
   #we want that all emails will be converted to lowercase view before we
   #save it in data base
-  before_save {self.email = email.downcase}
+  before_save  :downcase_email
   # checks that we have name
+  before_create :create_activation_digest
   validates  :name,            presence: true, length: {maximum: 30}
   validates  :nickname,     presence: true, length: {maximum: 255}
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\-.]+\z/
@@ -44,5 +45,17 @@ class User < ActiveRecord::Base
      BCrypt::Password.new(remember_digest).is_password?(remember_token)
   end
 
+  private
+
+  # convert to lowercase
+   def downcase_email
+    self.email = email.downcase
+   end
+
+  # create and confirm the activation token and digest
+  def create_activation_digest
+    self.activation_token = User.new_token
+    self.activation_digest = User.digest(activation_token)
+  end
 
 end

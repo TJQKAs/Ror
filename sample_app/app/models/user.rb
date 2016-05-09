@@ -39,10 +39,11 @@ class User < ActiveRecord::Base
  end
 
 
-  def authenticated?(remember_token)
+  def authenticated?(attribute, token)
+    digest = self.send("#{attribute}_digest")
   # returns true if the given token matches the digest
-    return false if remember_digest.nil?
-     BCrypt::Password.new(remember_digest).is_password?(remember_token)
+    return false if digest.nil?
+     BCrypt::Password.new(digest).is_password?(token)
   end
 
   private

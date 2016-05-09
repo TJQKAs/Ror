@@ -19,9 +19,13 @@ end
   def create
     @user = User.new(user_params)
     if @user.save
-      log_in @user
-      flash[:success]="Welcome to the sampleApp!!!"
-      redirect_to user_url(@user)
+      # send email activation
+      UserMailer.account_activation(@user).deliver_now
+      # log_in @user
+      # flash[:success]="Welcome to the sampleApp!!!"
+      flash[:info]="Please check your email to activate."
+      # redirect_to user_url(@user)
+      redirect_to root_url
     else
       render "new"
     end

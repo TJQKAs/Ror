@@ -20,7 +20,7 @@ end
     @user = User.new(user_params)
     if @user.save
       # send email activation
-      UserMailer.account_activation(@user).deliver_now
+      @user.send_activation_email
       # log_in @user
       # flash[:success]="Welcome to the sampleApp!!!"
       flash[:info]="Please check your email to activate."

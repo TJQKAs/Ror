@@ -1,4 +1,7 @@
 class PasswordResetsController < ApplicationController
+
+ before_action :get_user, only: [:edit, :update]
+
   def new
   end
 
@@ -14,6 +17,26 @@ class PasswordResetsController < ApplicationController
       render 'new'
     end
   end
+
    def edit
+   end
+
+   def update
+     if @user.update_attributes(user_params)
+       flash[:success] = "Password has been successfully updated"
+       log_in @user
+       redirect_to @user
+     else
+       render 'edit'
+   end
+ end
+
+   private
+   def user_params
+     params.require(:user).permit(:email, :password, :password_confirmation)
+   end
+
+   def get_user
+     @user = User.find_by(email: params[:email])
    end
 end
